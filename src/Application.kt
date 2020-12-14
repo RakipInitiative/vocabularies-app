@@ -91,14 +91,6 @@ fun Application.module(testing: Boolean = false) {
 
     routing {
         get("/") {
-            call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
-        }
-
-        get("/html-freemarker") {
-            call.respond(FreeMarkerContent("index.ftl", mapOf("data" to IndexData(listOf(1, 2, 3))), ""))
-        }
-
-        get("/template") {
             call.respond(FreeMarkerContent("index2.ftl", mapOf("data" to viewData), ""))
         }
 
