@@ -12,10 +12,13 @@ import io.ktor.jackson.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import org.h2.tools.DeleteDbFiles
+import java.io.File
 import java.sql.DriverManager
 import java.util.*
 
 fun main(args: Array<String>): Unit = io.ktor.server.tomcat.EngineMain.main(args)
+
+val appConfiguration = loadConfiguration() // TODO: Use appConfiguration
 
 @Suppress("unused") // Referenced in application.conf
 @kotlin.jvm.JvmOverloads
@@ -87,11 +90,17 @@ fun Application.module(testing: Boolean = false) {
                 "publication_type", "region", "right", "sampling_method", "sampling_point",
                 "sampling_program", "sampling_strategy", "software", "source", "status", "unit",
                 "unit_category")
+        val endpoint = appConfiguration.getProperty("base_url")
+        val resourcesFolder = if(appConfiguration.getProperty("context") != null) {
+            "${appConfiguration.getProperty("context")}/static"
+        } else {
+            "static"
+        }
     }
 
     routing {
         get("/") {
-            call.respond(FreeMarkerContent("index2.ftl", mapOf("data" to viewData), ""))
+            call.respond(FreeMarkerContent("index.ftl", mapOf("data" to viewData), ""))
         }
 
         get("/availability") {
@@ -620,5 +629,26 @@ fun initDatabase() {
     initialConnection.close()
 }
 
-data class IndexData(val items: List<Int>)
+private fun loadConfiguration(): Properties {
 
+    val properties = Properties()
+
+    val configFileInUserFolder = File(System.getProperty("user.home"), "vocabularies-app.properties")
+
+    if (configFileInUserFolder.exists()) {
+        configFileInUserFolder.inputStream().use {
+            properties.load(it)
+        }
+    } else {
+        val catalinaFolder = System.getProperty("catalina.home")
+        if (catalinaFolder != null && File(catalinaFolder, "vocabularies-app.properties").exists()) {
+            File(catalinaFolder, "vocabularies-app.properties").inputStream().use {
+                properties.load(it)
+            }
+        } else {
+            error("Configuration file not found")
+        }
+    }
+
+    return properties
+}
