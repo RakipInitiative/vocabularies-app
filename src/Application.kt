@@ -18,7 +18,12 @@ import java.util.*
 
 fun main(args: Array<String>): Unit = io.ktor.server.tomcat.EngineMain.main(args)
 
-val appConfiguration = loadConfiguration() // TODO: Use appConfiguration
+/**
+ * Filename of configuration file.
+ */
+const val CONFIG_FILE = "vocabularies-app.properties"
+
+val appConfiguration = loadConfiguration()
 
 @Suppress("unused") // Referenced in application.conf
 @kotlin.jvm.JvmOverloads
@@ -633,7 +638,7 @@ private fun loadConfiguration(): Properties {
 
     val properties = Properties()
 
-    val configFileInUserFolder = File(System.getProperty("user.home"), "vocabularies-app.properties")
+    val configFileInUserFolder = File(System.getProperty("user.home"), CONFIG_FILE)
 
     if (configFileInUserFolder.exists()) {
         configFileInUserFolder.inputStream().use {
@@ -641,8 +646,8 @@ private fun loadConfiguration(): Properties {
         }
     } else {
         val catalinaFolder = System.getProperty("catalina.home")
-        if (catalinaFolder != null && File(catalinaFolder, "vocabularies-app.properties").exists()) {
-            File(catalinaFolder, "vocabularies-app.properties").inputStream().use {
+        if (catalinaFolder != null && File(catalinaFolder, CONFIG_FILE).exists()) {
+            File(catalinaFolder, CONFIG_FILE).inputStream().use {
                 properties.load(it)
             }
         } else {
