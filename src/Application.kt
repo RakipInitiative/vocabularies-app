@@ -2,6 +2,7 @@ package de.bund.bfr.rakip
 
 import com.fasterxml.jackson.databind.SerializationFeature
 import de.bund.bfr.rakip.vocabularies.data.*
+import de.bund.bfr.rakip.vocabularies.domain.*
 import freemarker.cache.ClassTemplateLoader
 import io.ktor.application.*
 import io.ktor.features.*
@@ -87,16 +88,18 @@ fun Application.module(testing: Boolean = false) {
     val unitCategoryRepository = UnitCategoryRepository(connection)
 
     val viewData = object {
-        val vocabularies = listOf("availability", "collection_tool", "fish_area", "format", "hazard",
+        val vocabularies = listOf(
+            "availability", "collection_tool", "country", "fish_area", "format", "hazard",
             "hazard_type", "ind_sum", "laboratory_accreditation", "language", "language_written_in",
-                "model_class", "model_equation_class", "model_subclass", "packaging",
-                "parameter_distribution", "parameter_source", "parameter_subject", "population",
-                "product_matrix", "product_treatment", "production_method", "publication_status",
-                "publication_type", "region", "right", "sampling_method", "sampling_point",
-                "sampling_program", "sampling_strategy", "software", "source", "status", "unit",
-                "unit_category")
+            "model_class", "model_equation_class", "model_subclass", "packaging",
+            "parameter_distribution", "parameter_source", "parameter_subject", "population",
+            "product_matrix", "product_treatment", "production_method", "publication_status",
+            "publication_type", "region", "right", "sampling_method", "sampling_point",
+            "sampling_program", "sampling_strategy", "software", "source", "status", "unit",
+            "unit_category"
+        )
         val endpoint = appConfiguration.getProperty("base_url")
-        val resourcesFolder = if(appConfiguration.getProperty("context") != null) {
+        val resourcesFolder = if (appConfiguration.getProperty("context") != null) {
             "${appConfiguration.getProperty("context")}/static"
         } else {
             "static"
@@ -105,462 +108,401 @@ fun Application.module(testing: Boolean = false) {
 
     routing {
         get("/") {
-            call.respond(FreeMarkerContent("index.ftl", mapOf("data" to viewData), ""))
+            call.respondRedirect("/availability")
         }
 
         get("/availability") {
-            call.respond(availabilityRepository.all)
-        }
-
-        get("/availability/{id}") {
-            call.parameters["id"]?.toInt()?.let {
-                val availability = availabilityRepository.getById(it)
-                if (availability.isPresent) {
-                    call.respond(availability.get())
-                }
-            }
+            call.respond(
+                FreeMarkerContent(
+                    "tables/availability.ftl",
+                    mapOf("viewData" to viewData, "entries" to availabilityRepository.all),
+                    ""
+                )
+            )
         }
 
         get("/collection_tool") {
-            call.respond(collectionToolRepository.all)
-        }
-
-        get("/collection_tool/{id}") {
-            call.parameters["id"]?.toInt()?.let {
-                val tool = collectionToolRepository.getById(it)
-                if (tool.isPresent) {
-                    call.respond(tool.get())
-                }
-            }
+            call.respond(
+                FreeMarkerContent(
+                    "tables/collection_tool.ftl",
+                    mapOf("viewData" to viewData, "entries" to collectionToolRepository.all),
+                    ""
+                )
+            )
         }
 
         get("/country") {
-            call.respond(countryRepository.all)
-        }
-
-        get("/country/{id}") {
-            call.parameters["id"]?.toInt()?.let {
-                val country = countryRepository.getById(it)
-                if (country.isPresent) {
-                    call.respond(country.get())
-                }
-            }
+            call.respond(
+                FreeMarkerContent(
+                    "tables/country.ftl",
+                    mapOf("viewData" to viewData, "entries" to countryRepository.all),
+                    ""
+                )
+            )
         }
 
         get("/fish_area") {
-            call.respond(fishAreaRepository.all)
-        }
-
-        get("/fish_area/{id}") {
-            call.parameters["id"]?.toInt()?.let {
-                val fishArea = fishAreaRepository.getById(it)
-                if (fishArea.isPresent) {
-                    call.respond(fishArea.get())
-                }
-            }
+            call.respond(
+                FreeMarkerContent(
+                    "tables/fish_area.ftl",
+                    mapOf("viewData" to viewData, "entries" to fishAreaRepository.all),
+                    ""
+                )
+            )
         }
 
         get("/format") {
-            call.respond(formatRepository.all)
-        }
-
-        get("/format/{id}") {
-            call.parameters["id"]?.toInt()?.let {
-                val format = formatRepository.getById(it)
-                if (format.isPresent) {
-                    call.respond(format.get())
-                }
-            }
+            call.respond(
+                FreeMarkerContent(
+                    "tables/format.ftl",
+                    mapOf("viewData" to viewData, "entries" to formatRepository.all),
+                    ""
+                )
+            )
         }
 
         get("/hazard") {
-            call.respond(hazardRepository.all)
-        }
-
-        get("/hazard/{id}") {
-            call.parameters["id"]?.toInt()?.let {
-                val format = hazardRepository.getById(it)
-                if (format.isPresent) {
-                    call.respond(format.get())
-                }
-            }
+            call.respond(
+                FreeMarkerContent(
+                    "tables/hazard.ftl",
+                    mapOf("viewData" to viewData, "entries" to hazardRepository.all),
+                    ""
+                )
+            )
         }
 
         get("/hazard_type") {
-            call.respond(hazardTypeRepository.all)
-        }
-
-        get("/hazard_type/{id}") {
-            call.parameters["id"]?.toInt()?.let {
-                val hazardType = hazardTypeRepository.getById(it)
-                if (hazardType.isPresent) {
-                    call.respond(hazardType.get())
-                }
-            }
+            call.respond(
+                FreeMarkerContent(
+                    "tables/hazard_type.ftl",
+                    mapOf("viewData" to viewData, "entries" to hazardTypeRepository.all),
+                    ""
+                )
+            )
         }
 
         get("/ind_sum") {
-            call.respond(indSumRepository.all)
-        }
-
-        get("/ind_sum/{id}") {
-            call.parameters["id"]?.toInt()?.let {
-                val indSum = indSumRepository.getById(it)
-                if (indSum.isPresent) {
-                    call.respond(indSum.get())
-                }
-            }
+            call.respond(
+                FreeMarkerContent(
+                    "tables/ind_sum.ftl",
+                    mapOf("viewData" to viewData, "entries" to indSumRepository.all),
+                    ""
+                )
+            )
         }
 
         get("/laboratory_accreditation") {
-            call.respond(laboratoryAccreditationRepository.all)
-        }
-
-        get("/laboratory_accreditation/{id}") {
-            call.parameters["id"]?.toInt()?.let {
-                val laboratoryAccreditation = laboratoryAccreditationRepository.getById(it)
-                if (laboratoryAccreditation.isPresent) {
-                    call.respond(laboratoryAccreditation.get())
-                }
-            }
+            call.respond(
+                FreeMarkerContent(
+                    "tables/laboratory_accreditation.ftl",
+                    mapOf("viewData" to viewData, "entries" to laboratoryAccreditationRepository.all),
+                    ""
+                )
+            )
         }
 
         get("/language") {
-            call.respond(languageRepository.all)
-        }
-
-        get("/language/{id}") {
-            call.parameters["id"]?.toInt()?.let {
-                val language = languageRepository.getById(it)
-                if (language.isPresent) {
-                    call.respond(language.get())
-                }
-            }
+            call.respond(
+                FreeMarkerContent(
+                    "tables/language.ftl",
+                    mapOf("viewData" to viewData, "entries" to languageRepository.all),
+                    ""
+                )
+            )
         }
 
         get("/language_written_in") {
-            call.respond(languageWrittenInRepository.all)
-        }
-
-        get("/language_written_in/{id}") {
-            call.parameters["id"]?.toInt()?.let {
-                val languageWrittenIn = languageWrittenInRepository.getById(it)
-                if (languageWrittenIn.isPresent) {
-                    call.respond(languageWrittenIn.get())
-                }
-            }
+            call.respond(
+                FreeMarkerContent(
+                    "tables/language_written_in.ftl",
+                    mapOf("viewData" to viewData, "entries" to languageWrittenInRepository.all),
+                    ""
+                )
+            )
         }
 
         get("/model_class") {
-            call.respond(modelClassRepository.all)
-        }
-
-        get("/model_class/{id}") {
-            call.parameters["id"]?.toInt()?.let {
-                val modelClass = modelClassRepository.getById(it)
-                if (modelClass.isPresent) {
-                    call.respond(modelClass.get())
-                }
-            }
+            call.respond(
+                FreeMarkerContent(
+                    "tables/model_class.ftl",
+                    mapOf("viewData" to viewData, "entries" to modelClassRepository.all),
+                    ""
+                )
+            )
         }
 
         get("/model_equation_class") {
-            call.respond(modelEquationClassRepository.all)
-        }
-
-        get("/model_equation_class/{id}") {
-            call.parameters["id"]?.toInt()?.let {
-                val modelEquationClass = modelEquationClassRepository.getById(it)
-                if (modelEquationClass.isPresent) {
-                    call.respond(modelEquationClass.get())
-                }
-            }
+            call.respond(
+                FreeMarkerContent(
+                    "tables/model_equation_class.ftl",
+                    mapOf("viewData" to viewData, "entries" to modelEquationClassRepository.all),
+                    ""
+                )
+            )
         }
 
         get("/model_subclass") {
-            call.respond(modelSubclassRepository.all)
-        }
-
-        get("/model_subclass/{id}") {
-            call.parameters["id"]?.toInt()?.let {
-                val modelSubclass = modelSubclassRepository.getById(it)
-                if (modelSubclass.isPresent) {
-                    call.respond(modelSubclass.get())
-                }
-            }
+            call.respond(
+                FreeMarkerContent(
+                    "tables/model_subclass.ftl",
+                    mapOf("viewData" to viewData, "entries" to modelSubclassRepository.all),
+                    ""
+                )
+            )
         }
 
         get("/packaging") {
-            call.respond(packagingRepository.all)
-        }
-
-        get("/packaging/{id}") {
-            call.parameters["id"]?.toInt()?.let {
-                val packaging = packagingRepository.getById(it)
-                if (packaging.isPresent) {
-                    call.respond(packaging.get())
-                }
+            // TODO: comment can be null from the lib. This needs to be fixed in the lib so that missing comments
+            // are asigned empty string instead.
+            val originalPackaging = packagingRepository.all
+            val fixedPackaging = originalPackaging.map {
+                Packaging(it.id, it.name, it.ssd, it.comment ?: "")
             }
+            call.respond(
+                FreeMarkerContent(
+                    "tables/packaging.ftl",
+                    mapOf("viewData" to viewData, "entries" to fixedPackaging),
+                    ""
+                )
+            )
         }
 
         get("/parameter_distribution") {
-            call.respond(parameterDistributionRepository.all)
-        }
-
-        get("/parameter_distribution/{id}") {
-            call.parameters["id"]?.toInt()?.let {
-                val parameterDistribution = parameterDistributionRepository.getById(it)
-                if (parameterDistribution.isPresent) {
-                    call.respond(parameterDistribution.get())
-                }
+            // TODO: comment can be null from the lib. This needs to be fixed in the lib so that missing comments
+            // are asigned empty string instead.
+            val originalDistributions = parameterDistributionRepository.all
+            val fixedDistributions = originalDistributions.map {
+                ParameterDistribution(it.id, it.name, it.comment ?: "")
             }
+            call.respond(
+                FreeMarkerContent(
+                    "tables/parameter_distribution.ftl",
+                    mapOf("viewData" to viewData, "entries" to fixedDistributions),
+                    ""
+                )
+            )
         }
 
         get("/parameter_source") {
-            call.respond(parameterSourceRepository.all)
-        }
-
-        get("/parameter_source/{id}") {
-            call.parameters["id"]?.toInt()?.let {
-                val parameterSource = parameterSourceRepository.getById(it)
-                if (parameterSource.isPresent) {
-                    call.respond(parameterSource.get())
-                }
-            }
+            call.respond(
+                FreeMarkerContent(
+                    "tables/parameter_source.ftl",
+                    mapOf("viewData" to viewData, "entries" to parameterSourceRepository.all),
+                    ""
+                )
+            )
         }
 
         get("/parameter_subject") {
-            call.respond(parameterSubjectRepository.all)
-        }
-
-        get("/parameter_subject/{id}") {
-            call.parameters["id"]?.toInt()?.let {
-                val parameterSubject = parameterSubjectRepository.getById(it)
-                if (parameterSubject.isPresent) {
-                    call.respond(parameterSubject.get())
-                }
-            }
+            call.respond(
+                FreeMarkerContent(
+                    "tables/parameter_subject.ftl",
+                    mapOf("viewData" to viewData, "entries" to parameterSubjectRepository.all),
+                    ""
+                )
+            )
         }
 
         get("/population") {
-            call.respond(populationRepository.all)
-        }
-
-        get("/population/{id}") {
-            call.parameters["id"]?.toInt()?.let {
-                val population = populationRepository.getById(it)
-                if (population.isPresent) {
-                    call.respond(population.get())
-                }
-            }
+            call.respond(
+                FreeMarkerContent(
+                    "tables/population.ftl",
+                    mapOf("viewData" to viewData, "entries" to populationRepository.all),
+                    ""
+                )
+            )
         }
 
         get("/product_matrix") {
-            call.respond(productMatrixRepository.all)
-        }
-
-        get("/product_matrix/{id}") {
-            call.parameters["id"]?.toInt()?.let {
-                val productMatrix = productMatrixRepository.getById(it)
-                if (productMatrix.isPresent) {
-                    call.respond(productMatrix.get())
-                }
+            // TODO: comment can be null from the lib. This needs to be fixed in the lib so that missing comments
+            // are asigned empty string instead.
+            val originalMatrices = productMatrixRepository.all
+            val fixedMatrices = originalMatrices.map {
+                ProductMatrix(it.id, it.ssd, it.name, it.comment ?: "")
             }
+            call.respond(
+                FreeMarkerContent(
+                    "tables/product_matrix.ftl",
+                    mapOf("viewData" to viewData, "entries" to fixedMatrices),
+                    ""
+                )
+            )
         }
 
         get("/product_treatment") {
-            call.respond(productTreatmentRepository.all)
-        }
-
-        get("/product_treatment/{id}") {
-            call.parameters["id"]?.toInt()?.let {
-                val productTreatment = productTreatmentRepository.getById(it)
-                if (productTreatment.isPresent) {
-                    call.respond(productTreatment.get())
-                }
+            // TODO: comment can be null from the lib. This needs to be fixed in the lib so that missing comments
+            // are assigned empty string instead.
+            val originalTreatments = productTreatmentRepository.all
+            val fixedTreatments = originalTreatments.map {
+                ProductTreatment(it.id, it.name, it.ssd, it.comment ?: "")
             }
+            call.respond(
+                FreeMarkerContent(
+                    "tables/product_treatment.ftl",
+                    mapOf("viewData" to viewData, "entries" to fixedTreatments),
+                    ""
+                )
+            )
         }
 
         get("/production_method") {
             call.respond(productionMethodRepository.all)
         }
 
-        get("/production_method/{id}") {
-            call.parameters["id"]?.toInt()?.let {
-                val productionMethod = productionMethodRepository.getById(it)
-                if (productionMethod.isPresent) {
-                    call.respond(productionMethod.get())
-                }
-            }
-        }
-
         get("/publication_status") {
-            call.respond(publicationStatusRepository.all)
-        }
-
-        get("/publication_status/{id}") {
-            call.parameters["id"]?.toInt()?.let {
-                val modelSubclass = modelSubclassRepository.getById(it)
-                if (modelSubclass.isPresent) {
-                    call.respond(modelSubclass.get())
-                }
+            // TODO: comment can be null from the lib. This needs to be fixed in the lib so that missing comments
+            // are assigned empty string instead.
+            val originalStatus = publicationStatusRepository.all
+            val fixedStatus = originalStatus.map {
+                PublicationStatus(it.id, it.name, it.comment ?: "")
             }
+            call.respond(
+                FreeMarkerContent(
+                    "tables/publication_status.ftl",
+                    mapOf("viewData" to viewData, "entries" to fixedStatus),
+                    ""
+                )
+            )
         }
 
         get("/publication_type") {
-            call.respond(publicationTypeRepository.all)
-        }
-
-        get("/publication_type/{id}") {
-            call.parameters["id"]?.toInt()?.let {
-                val publicationType = publicationTypeRepository.getById(it)
-                if (publicationType.isPresent) {
-                    call.respond(publicationType.get())
-                }
-            }
+            call.respond(
+                FreeMarkerContent(
+                    "tables/publication_type.ftl",
+                    mapOf("viewData" to viewData, "entries" to publicationTypeRepository.all),
+                    ""
+                )
+            )
         }
 
         get("/region") {
-            call.respond(regionRepository.all)
-        }
-
-        get("/region/{id}") {
-            call.parameters["id"]?.toInt()?.let {
-                val region = regionRepository.getById(it)
-                if (region.isPresent) {
-                    call.respond(region.get())
-                }
-            }
+            call.respond(
+                FreeMarkerContent(
+                    "tables/region.ftl",
+                    mapOf("viewData" to viewData, "entries" to regionRepository.all),
+                    ""
+                )
+            )
         }
 
         get("/right") {
-            call.respond(rightRepository.all)
-        }
-
-        get("/right/{id}") {
-            call.parameters["id"]?.toInt()?.let {
-                val right = rightRepository.getById(it)
-                if (right.isPresent) {
-                    call.respond(right.get())
-                }
-            }
+            call.respond(
+                FreeMarkerContent(
+                    "tables/right.ftl",
+                    mapOf("viewData" to viewData, "entries" to rightRepository.all),
+                    ""
+                )
+            )
         }
 
         get("/sampling_method") {
-            call.respond(samplingMethodRepository.all)
-        }
-
-        get("/sampling_method/{id}") {
-            call.parameters["id"]?.toInt()?.let {
-                val samplingMethod = samplingMethodRepository.getById(it)
-                if (samplingMethod.isPresent) {
-                    call.respond(samplingMethod.get())
-                }
+            // TODO: workaround. comment can be null. These need to be replaced with empty
+            // string in the library
+            val originalMethods = samplingMethodRepository.all
+            val fixedMethods = originalMethods.map {
+                SamplingMethod(it.id, it.name, it.sampmd, it.comment ?: "")
             }
+            call.respond(
+                FreeMarkerContent(
+                    "tables/sampling_method.ftl",
+                    mapOf("viewData" to viewData, "entries" to fixedMethods),
+                    ""
+                )
+            )
         }
 
         get("/sampling_point") {
-            call.respond(samplingPointRepository.all)
-        }
-
-        get("/sampling_point/{id}") {
-            call.parameters["id"]?.toInt()?.let {
-                val samplingPoint = samplingPointRepository.getById(it)
-                if (samplingPoint.isPresent) {
-                    call.respond(samplingPoint.get())
-                }
-            }
+            call.respond(
+                FreeMarkerContent(
+                    "tables/sampling_point.ftl",
+                    mapOf("viewData" to viewData, "entries" to samplingPointRepository.all),
+                    ""
+                )
+            )
         }
 
         get("/sampling_program") {
-            call.respond(samplingProgramRepository.all)
-        }
-
-        get("/sampling_program/{id}") {
-            call.parameters["id"]?.toInt()?.let {
-                val samplingProgram = samplingProgramRepository.getById(it)
-                if (samplingProgram.isPresent) {
-                    call.respond(samplingProgram.get())
-                }
-            }
+            call.respond(
+                FreeMarkerContent(
+                    "tables/sampling_program.ftl",
+                    mapOf("viewData" to viewData, "entries" to samplingProgramRepository.all),
+                    ""
+                )
+            )
         }
 
         get("/sampling_strategy") {
-            call.respond(samplingStrategyRepository.all)
+            // TODO: nullable comments
+            val originalStrategies = samplingStrategyRepository.all
+            val fixedStrategies = originalStrategies.map {
+                SamplingStrategy(it.id, it.name, it.comment ?: "")
+            }
+            call.respond(
+                FreeMarkerContent(
+                    "tables/sampling_strategy.ftl",
+                    mapOf("viewData" to viewData, "entries" to fixedStrategies),
+                    ""
+                )
+            )
         }
 
-        get("/sampling_strategy/{id}") {
-            call.parameters["id"]?.toInt()?.let {
-                val samplingStrategy = samplingStrategyRepository.getById(it)
-                if (samplingStrategy.isPresent) {
-                    call.respond(samplingStrategy.get())
-                }
-            }
-        }
 
         get("/software") {
-            call.respond(softwareRepository.all)
-        }
-
-        get("/software/{id}") {
-            call.parameters["id"]?.toInt()?.let {
-                val software = softwareRepository.getById(it)
-                if (software.isPresent) {
-                    call.respond(software.get())
-                }
-            }
+            call.respond(
+                FreeMarkerContent(
+                    "tables/software.ftl",
+                    mapOf("viewData" to viewData, "entries" to softwareRepository.all),
+                    ""
+                )
+            )
         }
 
         get("/source") {
-            call.respond(sourceRepository.all)
-        }
-
-        get("/source/{id}") {
-            call.parameters["id"]?.toInt()?.let {
-                val source = sourceRepository.getById(it)
-                if (source.isPresent) {
-                    call.respond(source.get())
-                }
-            }
+            call.respond(
+                FreeMarkerContent(
+                    "tables/source.ftl",
+                    mapOf("viewData" to viewData, "entries" to sourceRepository.all),
+                    ""
+                )
+            )
         }
 
         get("/status") {
-            call.respond(statusRepository.all)
-        }
-
-        get("/status/{id}") {
-            call.parameters["id"]?.toInt()?.let {
-                val status = statusRepository.getById(it)
-                if (status.isPresent) {
-                    call.respond(status.get())
-                }
+            // TODO: nullable comments
+            val originalStatus = statusRepository.all
+            val fixedStatus = originalStatus.map {
+                PublicationStatus(it.id, it.name, it.comment ?: "")
             }
+            call.respond(
+                FreeMarkerContent(
+                    "tables/status.ftl",
+                    mapOf("viewData" to viewData, "entries" to fixedStatus),
+                    ""
+                )
+            )
         }
 
         get("/unit") {
-            call.respond(unitRepository.all)
-        }
-
-        get("/unit/{id}") {
-            call.parameters["id"]?.toInt()?.let {
-                val unit = unitRepository.getById(it)
-                if (unit.isPresent) {
-                    call.respond(unit.get())
-                }
-            }
+            // TODO: nullable ssd
+            val originalUnits = unitRepository.all
+            val fixedUnits = originalUnits.map { Unit(it.id, it.name, it.ssd ?: "", it.comment, it.category) }
+            call.respond(
+                FreeMarkerContent(
+                    "tables/unit.ftl",
+                    mapOf("viewData" to viewData, "entries" to fixedUnits),
+                    ""
+                )
+            )
         }
 
         get("/unit_category") {
-            call.respond(modelSubclassRepository.all)
-        }
-
-        get("/unit_category/{id}") {
-            call.parameters["id"]?.toInt()?.let {
-                val unitCategory = unitCategoryRepository.getById(it)
-                if (unitCategory.isPresent) {
-                    call.respond(unitCategory.get())
-                }
-            }
+            call.respond(
+                FreeMarkerContent(
+                    "tables/unit_category.ftl",
+                    mapOf("viewData" to viewData, "entries" to unitCategoryRepository.all),
+                    ""
+                )
+            )
         }
 
         // Static feature. Try to access `/static/ktor_logo.svg`
@@ -590,39 +532,39 @@ fun initDatabase() {
 
     // Insert data
     val filenames = listOf(
-            "availability.sql",
-            "collection_tool.sql",
-            "country.sql",
-            "fish_area.sql",
-            "format.sql",
-            "hazard_type.sql",
-            "hazard.sql",
-            "ind_sum.sql",
-            "laboratory_accreditation.sql",
-            "language_written_in.sql",
-            "language.sql",
-            "model_class.sql",
-            "model_equation_class.sql",
-            "packaging.sql",
-            "parameter_distribution.sql",
-            "parameter_source.sql",
-            "parameter_subject.sql",
-            "population.sql",
-            "prodmeth.sql",
-            "prodTreat.sql",
-            "product_matrix.sql",
-            "publication_status.sql",
-            "publication_type.sql",
-            "region.sql",
-            "rights.sql",
-            "sampling_method.sql",
-            "sampling_point.sql",
-            "sampling_program.sql",
-            "sampling_strategy.sql",
-            "software.sql",
-            "sources.sql",
-            "status.sql",
-            "unit.sql"
+        "availability.sql",
+        "collection_tool.sql",
+        "country.sql",
+        "fish_area.sql",
+        "format.sql",
+        "hazard_type.sql",
+        "hazard.sql",
+        "ind_sum.sql",
+        "laboratory_accreditation.sql",
+        "language_written_in.sql",
+        "language.sql",
+        "model_class.sql",
+        "model_equation_class.sql",
+        "packaging.sql",
+        "parameter_distribution.sql",
+        "parameter_source.sql",
+        "parameter_subject.sql",
+        "population.sql",
+        "prodmeth.sql",
+        "prodTreat.sql",
+        "product_matrix.sql",
+        "publication_status.sql",
+        "publication_type.sql",
+        "region.sql",
+        "rights.sql",
+        "sampling_method.sql",
+        "sampling_point.sql",
+        "sampling_program.sql",
+        "sampling_strategy.sql",
+        "software.sql",
+        "sources.sql",
+        "status.sql",
+        "unit.sql"
     )
 
     for (filename in filenames) {
