@@ -26,7 +26,7 @@
 <div class="container">
     <div class="form-group row">
         <label for="vocabularySelect">Select vocabulary</label>
-        <div class="col-sm-10">
+        <div class="col-sm-9">
             <select class="form-control" id="vocabularySelect">
                 <#list viewData.vocabularies as vocabulary>
                 <option>${vocabulary}</option>
@@ -38,6 +38,7 @@
                 select.onchange = () => window.location = URL + select.value;
             </script>
         </div>
+        <a href="/csv?vocabulary=collection_tool" class="btn btn-primary" role="button">Download data</a>
     </div>
 
     <table class="table table-sm">

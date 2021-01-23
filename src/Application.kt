@@ -505,6 +505,23 @@ fun Application.module(testing: Boolean = false) {
             )
         }
 
+        get("/csv") {
+            call.parameters["vocabulary"]?.let {
+
+                // Create temporary file with csvString
+                 val csvString = createCSV(it, connection)
+                val csvFile = createTempFile(it, ".csv")
+                csvFile.writeText(csvString)
+
+                // Return temporary file
+                call.response.header("Content-Disposition", "attachment; filename=${it}.csv")
+                call.respondFile(csvFile)
+
+                // Delete temporary file
+                csvFile.delete()
+            }
+        }
+
         // Static feature. Try to access `/static/ktor_logo.svg`
         static("/static") {
             resources("static")
