@@ -99,156 +99,69 @@ fun Application.module(testing: Boolean = false) {
             "unit_category"
         )
         val endpoint = appConfiguration.getProperty("base_url")
-        val resourcesFolder = if (appConfiguration.getProperty("context") != null) {
-            "${appConfiguration.getProperty("context")}/static"
-        } else {
-            "static"
-        }
+        val context = appConfiguration.getProperty("context") ?: ""
+        val resourcesFolder = "static"
     }
 
     routing {
         get("/") {
-            call.respondRedirect("/availability")
+            call.respond(FreeMarkerContent("index.ftl", mapOf("viewData" to viewData), ""))
         }
 
         get("/availability") {
-            call.respond(
-                FreeMarkerContent(
-                    "tables/availability.ftl",
-                    mapOf("viewData" to viewData, "entries" to availabilityRepository.all),
-                    ""
-                )
-            )
+            call.respond(availabilityRepository.all)
         }
 
         get("/collection_tool") {
-            call.respond(
-                FreeMarkerContent(
-                    "tables/collection_tool.ftl",
-                    mapOf("viewData" to viewData, "entries" to collectionToolRepository.all),
-                    ""
-                )
-            )
+            call.respond(collectionToolRepository.all)
         }
 
         get("/country") {
-            call.respond(
-                FreeMarkerContent(
-                    "tables/country.ftl",
-                    mapOf("viewData" to viewData, "entries" to countryRepository.all),
-                    ""
-                )
-            )
+            call.respond(countryRepository.all)
         }
 
         get("/fish_area") {
-            call.respond(
-                FreeMarkerContent(
-                    "tables/fish_area.ftl",
-                    mapOf("viewData" to viewData, "entries" to fishAreaRepository.all),
-                    ""
-                )
-            )
+            call.respond(fishAreaRepository.all)
         }
 
         get("/format") {
-            call.respond(
-                FreeMarkerContent(
-                    "tables/format.ftl",
-                    mapOf("viewData" to viewData, "entries" to formatRepository.all),
-                    ""
-                )
-            )
+            call.respond(formatRepository.all)
         }
 
         get("/hazard") {
-            call.respond(
-                FreeMarkerContent(
-                    "tables/hazard.ftl",
-                    mapOf("viewData" to viewData, "entries" to hazardRepository.all),
-                    ""
-                )
-            )
+            call.respond(hazardRepository.all)
         }
 
         get("/hazard_type") {
-            call.respond(
-                FreeMarkerContent(
-                    "tables/hazard_type.ftl",
-                    mapOf("viewData" to viewData, "entries" to hazardTypeRepository.all),
-                    ""
-                )
-            )
+            call.respond(hazardTypeRepository.all)
         }
 
         get("/ind_sum") {
-            call.respond(
-                FreeMarkerContent(
-                    "tables/ind_sum.ftl",
-                    mapOf("viewData" to viewData, "entries" to indSumRepository.all),
-                    ""
-                )
-            )
+            call.respond(indSumRepository.all)
         }
 
         get("/laboratory_accreditation") {
-            call.respond(
-                FreeMarkerContent(
-                    "tables/laboratory_accreditation.ftl",
-                    mapOf("viewData" to viewData, "entries" to laboratoryAccreditationRepository.all),
-                    ""
-                )
-            )
+            call.respond(laboratoryAccreditationRepository.all)
         }
 
         get("/language") {
-            call.respond(
-                FreeMarkerContent(
-                    "tables/language.ftl",
-                    mapOf("viewData" to viewData, "entries" to languageRepository.all),
-                    ""
-                )
-            )
+            call.respond(languageRepository.all)
         }
 
         get("/language_written_in") {
-            call.respond(
-                FreeMarkerContent(
-                    "tables/language_written_in.ftl",
-                    mapOf("viewData" to viewData, "entries" to languageWrittenInRepository.all),
-                    ""
-                )
-            )
+            call.respond(languageWrittenInRepository.all)
         }
 
         get("/model_class") {
-            call.respond(
-                FreeMarkerContent(
-                    "tables/model_class.ftl",
-                    mapOf("viewData" to viewData, "entries" to modelClassRepository.all),
-                    ""
-                )
-            )
+            call.respond(modelClassRepository.all)
         }
 
         get("/model_equation_class") {
-            call.respond(
-                FreeMarkerContent(
-                    "tables/model_equation_class.ftl",
-                    mapOf("viewData" to viewData, "entries" to modelEquationClassRepository.all),
-                    ""
-                )
-            )
+            call.respond(modelEquationClassRepository.all)
         }
 
         get("/model_subclass") {
-            call.respond(
-                FreeMarkerContent(
-                    "tables/model_subclass.ftl",
-                    mapOf("viewData" to viewData, "entries" to modelSubclassRepository.all),
-                    ""
-                )
-            )
+            call.respond(modelSubclassRepository.all)
         }
 
         get("/packaging") {
@@ -258,59 +171,29 @@ fun Application.module(testing: Boolean = false) {
             val fixedPackaging = originalPackaging.map {
                 Packaging(it.id, it.name, it.ssd, it.comment ?: "")
             }
-            call.respond(
-                FreeMarkerContent(
-                    "tables/packaging.ftl",
-                    mapOf("viewData" to viewData, "entries" to fixedPackaging),
-                    ""
-                )
-            )
+            call.respond(fixedPackaging)
         }
 
         get("/parameter_distribution") {
             // TODO: comment can be null from the lib. This needs to be fixed in the lib so that missing comments
-            // are asigned empty string instead.
+            // are assigned empty string instead.
             val originalDistributions = parameterDistributionRepository.all
             val fixedDistributions = originalDistributions.map {
                 ParameterDistribution(it.id, it.name, it.comment ?: "")
             }
-            call.respond(
-                FreeMarkerContent(
-                    "tables/parameter_distribution.ftl",
-                    mapOf("viewData" to viewData, "entries" to fixedDistributions),
-                    ""
-                )
-            )
+            call.respond(fixedDistributions)
         }
 
         get("/parameter_source") {
-            call.respond(
-                FreeMarkerContent(
-                    "tables/parameter_source.ftl",
-                    mapOf("viewData" to viewData, "entries" to parameterSourceRepository.all),
-                    ""
-                )
-            )
+            call.respond(parameterSourceRepository.all)
         }
 
         get("/parameter_subject") {
-            call.respond(
-                FreeMarkerContent(
-                    "tables/parameter_subject.ftl",
-                    mapOf("viewData" to viewData, "entries" to parameterSubjectRepository.all),
-                    ""
-                )
-            )
+            call.respond(parameterSubjectRepository.all)
         }
 
         get("/population") {
-            call.respond(
-                FreeMarkerContent(
-                    "tables/population.ftl",
-                    mapOf("viewData" to viewData, "entries" to populationRepository.all),
-                    ""
-                )
-            )
+            call.respond(populationRepository.all)
         }
 
         get("/product_matrix") {
@@ -320,13 +203,7 @@ fun Application.module(testing: Boolean = false) {
             val fixedMatrices = originalMatrices.map {
                 ProductMatrix(it.id, it.ssd, it.name, it.comment ?: "")
             }
-            call.respond(
-                FreeMarkerContent(
-                    "tables/product_matrix.ftl",
-                    mapOf("viewData" to viewData, "entries" to fixedMatrices),
-                    ""
-                )
-            )
+            call.respond(fixedMatrices)
         }
 
         get("/product_treatment") {
@@ -336,13 +213,7 @@ fun Application.module(testing: Boolean = false) {
             val fixedTreatments = originalTreatments.map {
                 ProductTreatment(it.id, it.name, it.ssd, it.comment ?: "")
             }
-            call.respond(
-                FreeMarkerContent(
-                    "tables/product_treatment.ftl",
-                    mapOf("viewData" to viewData, "entries" to fixedTreatments),
-                    ""
-                )
-            )
+            call.respond(fixedTreatments)
         }
 
         get("/production_method") {
@@ -356,43 +227,19 @@ fun Application.module(testing: Boolean = false) {
             val fixedStatus = originalStatus.map {
                 PublicationStatus(it.id, it.name, it.comment ?: "")
             }
-            call.respond(
-                FreeMarkerContent(
-                    "tables/publication_status.ftl",
-                    mapOf("viewData" to viewData, "entries" to fixedStatus),
-                    ""
-                )
-            )
+            call.respond(publicationStatusRepository.all)
         }
 
         get("/publication_type") {
-            call.respond(
-                FreeMarkerContent(
-                    "tables/publication_type.ftl",
-                    mapOf("viewData" to viewData, "entries" to publicationTypeRepository.all),
-                    ""
-                )
-            )
+            call.respond(publicationTypeRepository.all)
         }
 
         get("/region") {
-            call.respond(
-                FreeMarkerContent(
-                    "tables/region.ftl",
-                    mapOf("viewData" to viewData, "entries" to regionRepository.all),
-                    ""
-                )
-            )
+            call.respond(regionRepository.all)
         }
 
         get("/right") {
-            call.respond(
-                FreeMarkerContent(
-                    "tables/right.ftl",
-                    mapOf("viewData" to viewData, "entries" to rightRepository.all),
-                    ""
-                )
-            )
+            call.respond(rightRepository.all)
         }
 
         get("/sampling_method") {
@@ -402,33 +249,15 @@ fun Application.module(testing: Boolean = false) {
             val fixedMethods = originalMethods.map {
                 SamplingMethod(it.id, it.name, it.sampmd, it.comment ?: "")
             }
-            call.respond(
-                FreeMarkerContent(
-                    "tables/sampling_method.ftl",
-                    mapOf("viewData" to viewData, "entries" to fixedMethods),
-                    ""
-                )
-            )
+            call.respond(fixedMethods)
         }
 
         get("/sampling_point") {
-            call.respond(
-                FreeMarkerContent(
-                    "tables/sampling_point.ftl",
-                    mapOf("viewData" to viewData, "entries" to samplingPointRepository.all),
-                    ""
-                )
-            )
+            call.respond(samplingPointRepository.all)
         }
 
         get("/sampling_program") {
-            call.respond(
-                FreeMarkerContent(
-                    "tables/sampling_program.ftl",
-                    mapOf("viewData" to viewData, "entries" to samplingProgramRepository.all),
-                    ""
-                )
-            )
+            call.respond(samplingProgramRepository.all)
         }
 
         get("/sampling_strategy") {
@@ -437,34 +266,16 @@ fun Application.module(testing: Boolean = false) {
             val fixedStrategies = originalStrategies.map {
                 SamplingStrategy(it.id, it.name, it.comment ?: "")
             }
-            call.respond(
-                FreeMarkerContent(
-                    "tables/sampling_strategy.ftl",
-                    mapOf("viewData" to viewData, "entries" to fixedStrategies),
-                    ""
-                )
-            )
+            call.respond(samplingStrategyRepository.all)
         }
 
 
         get("/software") {
-            call.respond(
-                FreeMarkerContent(
-                    "tables/software.ftl",
-                    mapOf("viewData" to viewData, "entries" to softwareRepository.all),
-                    ""
-                )
-            )
+            call.respond(softwareRepository.all)
         }
 
         get("/source") {
-            call.respond(
-                FreeMarkerContent(
-                    "tables/source.ftl",
-                    mapOf("viewData" to viewData, "entries" to sourceRepository.all),
-                    ""
-                )
-            )
+            call.respond(sourceRepository.all)
         }
 
         get("/status") {
@@ -473,36 +284,18 @@ fun Application.module(testing: Boolean = false) {
             val fixedStatus = originalStatus.map {
                 PublicationStatus(it.id, it.name, it.comment ?: "")
             }
-            call.respond(
-                FreeMarkerContent(
-                    "tables/status.ftl",
-                    mapOf("viewData" to viewData, "entries" to fixedStatus),
-                    ""
-                )
-            )
+            call.respond(fixedStatus)
         }
 
         get("/unit") {
             // TODO: nullable ssd
             val originalUnits = unitRepository.all
             val fixedUnits = originalUnits.map { Unit(it.id, it.name, it.ssd ?: "", it.comment, it.category) }
-            call.respond(
-                FreeMarkerContent(
-                    "tables/unit.ftl",
-                    mapOf("viewData" to viewData, "entries" to fixedUnits),
-                    ""
-                )
-            )
+            call.respond(fixedUnits)
         }
 
         get("/unit_category") {
-            call.respond(
-                FreeMarkerContent(
-                    "tables/unit_category.ftl",
-                    mapOf("viewData" to viewData, "entries" to unitCategoryRepository.all),
-                    ""
-                )
-            )
+            call.respond(unitCategoryRepository.all)
         }
 
         get("/csv") {
