@@ -1,3 +1,4 @@
+# vocabularies-app [![Build Status](https://travis-ci.org/RakipInitiative/vocabularies-app.svg?branch=main)](https://travis-ci.org/RakipInitiative/vocabularies-app)
 Small service exposing the vocabularies database.
 
 Endpoints
