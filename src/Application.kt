@@ -24,8 +24,6 @@ fun main(args: Array<String>): Unit = io.ktor.server.tomcat.EngineMain.main(args
  */
 const val CONFIG_FILE = "vocabularies-app.properties"
 
-val appConfiguration = loadConfiguration()
-
 @Suppress("unused") // Referenced in application.conf
 @kotlin.jvm.JvmOverloads
 fun Application.module(testing: Boolean = false) {
@@ -45,6 +43,10 @@ fun Application.module(testing: Boolean = false) {
         }
     }
     install(DefaultHeaders)
+
+    val defaultProperties = Properties()
+    defaultProperties.setProperty("base_url", "http://localhost:8080/")
+    val appConfiguration = if (testing) defaultProperties else loadConfiguration()
 
     Class.forName("org.h2.Driver")
     initDatabase()

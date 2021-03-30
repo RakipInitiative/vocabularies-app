@@ -1,3 +1,4 @@
+# vocabularies-app [![Java CI](https://github.com/RakipInitiative/vocabularies-app/actions/workflows/basic.yml/badge.svg)](https://github.com/RakipInitiative/vocabularies-app/actions/workflows/basic.yml)
 Small service exposing the vocabularies database.
 
 Endpoints
