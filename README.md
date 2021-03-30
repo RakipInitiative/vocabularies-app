@@ -1,4 +1,4 @@
-# vocabularies-app [![Build Status](https://travis-ci.org/RakipInitiative/vocabularies-app.svg?branch=main)](https://travis-ci.org/RakipInitiative/vocabularies-app)
+# vocabularies-app [![Java CI](https://github.com/RakipInitiative/vocabularies-app/actions/workflows/basic.yml/badge.svg)](https://github.com/RakipInitiative/vocabularies-app/actions/workflows/basic.yml)
 Small service exposing the vocabularies database.
 
 Endpoints
