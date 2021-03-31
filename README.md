@@ -1,4 +1,4 @@
-# vocabularies-app [![Java CI](https://github.com/RakipInitiative/vocabularies-app/actions/workflows/basic.yml/badge.svg)](https://github.com/RakipInitiative/vocabularies-app/actions/workflows/basic.yml) [![Maintainability](https://api.codeclimate.com/v1/badges/89597eaeb8b493377f72/maintainability)](https://codeclimate.com/github/RakipInitiative/vocabularies-app/maintainability)
+# vocabularies-app [![Java CI](https://github.com/RakipInitiative/vocabularies-app/actions/workflows/basic.yml/badge.svg)](https://github.com/RakipInitiative/vocabularies-app/actions/workflows/basic.yml) [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=RakipInitiative_vocabularies-app&metric=code_smells)](https://sonarcloud.io/dashboard?id=RakipInitiative_vocabularies-app) 
 Small service exposing the vocabularies database.
 
 Endpoints
