@@ -52,7 +52,14 @@ repositories {
     mavenLocal()
     jcenter()
     maven { url 'https://kotlin.bintray.com/ktor' }
-    maven { url "https://dl.bintray.com/silebat/maven_repo" }
+    maven {
+        name 'vocabularies'
+        url 'https://maven.pkg.github.com/RakipInitiative/vocabularies'
+        credentials {
+            username project.findProperty("github.packages.username") ?: System.getenv("GITHUB_NAME")
+            password project.findProperty("github.packages.password") ?: System.getenv("GITHUB_TOKEN")
+        }
+    }
 }
 
 dependencies {
@@ -66,7 +73,7 @@ dependencies {
     implementation "io.ktor:ktor-server-core:$ktor_version"
     implementation "io.ktor:ktor-freemarker:$ktor_version"
     implementation "io.ktor:ktor-server-host-common:$ktor_version"
-    implementation "de.bund.bfr.rakip:vocabularies:0.0.1"
+    implementation "de.bund.bfr.rakip:vocabularies:2.0.1"
     implementation "com.h2database:h2:1.4.200"
 
     testImplementation "io.ktor:ktor-server-tests:$ktor_version"

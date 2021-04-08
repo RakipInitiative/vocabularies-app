@@ -1,6 +1,18 @@
 # vocabularies-app [![Java CI](https://github.com/RakipInitiative/vocabularies-app/actions/workflows/basic.yml/badge.svg)](https://github.com/RakipInitiative/vocabularies-app/actions/workflows/basic.yml) [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=RakipInitiative_vocabularies-app&metric=code_smells)](https://sonarcloud.io/dashboard?id=RakipInitiative_vocabularies-app) 
 Small service exposing the vocabularies database.
 
+Building
+--------
+vocabularies-app is using the library https://github.com/RakipInitiative/vocabularies hosted in GitHub packages so authentication in GitHub is needed. Two gradle properties must be configured to fetch this library:
+* *github.packages.username* GitHub user name
+* *github.packages.password* GitHub token. The default scopes are sufficient (read public repos).
+
+This is better configured at ~/.gradle/gradle.properties. For example:
+```properties
+github.packages.username=john_doe
+github.packages.password=G4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ
+```
+
 Endpoints
 ---------
 * /availability
