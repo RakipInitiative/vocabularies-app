@@ -336,7 +336,8 @@ fun initDatabase() {
     val initialConnection = DriverManager.getConnection("jdbc:h2:~/vocabularies", fastImportProperties)
 
     // Load tables
-    val tablesSql = object {}.javaClass.getResource("/tables.sql").readText()
+    val classLoader = Thread.currentThread().contextClassLoader
+    val tablesSql = classLoader.getResource("data/tables.sql")!!.readText()
     println("Creating tables")
 
     val statement = initialConnection.createStatement()
@@ -381,7 +382,7 @@ fun initDatabase() {
 
     for (filename in filenames) {
         println("Loading $filename")
-        val sqlContent = object {}.javaClass.getResource("/initialdata/$filename").readText()
+        val sqlContent = classLoader.getResource("data/initialdata/$filename")!!.readText()
         sqlContent.lines().forEach { statement.execute(it) }
     }
 
