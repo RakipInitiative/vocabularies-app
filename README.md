@@ -70,7 +70,7 @@ Tomcat started.
 
 The *vocabularies-app.properties* file is a simple Java properties file with the following keys:
 * `base_url`: Url to application.
-* `context`: Path of the application if deployed under an application container. For example for https://knime.bfr.berlin/vocabularies the context is `vocabularies`. This can be omitted for local applications not running in a container.
+* `context`: Path of the application if deployed under an application container. For example for https://my-domain/vocabularies the context is `vocabularies`. This can be omitted for local applications not running in a container.
 
 Example vocabularies-app.properties file:
 ```
